@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>View All Users</title>
+</head>
+
+<body class="p-10 m-10 flex justify-center bg-gray-300">
+    <div class="px-10 py-20 bg-white align-center border border-black-900 rounded-xl m-10 shadow-2xl">
+        <h1 class="text-black-900 text-2xl mb-6 font-semibold">View All Users</h1>
+        <button class="bg-blue-600 text-white w-36 p-3 rounded mb-4 hover:bg-blue-800" id="viewUsersBtn">View Users</button>
+        <div id="userList" class="mt-4 text-black">
+            <!-- User list will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('viewUsersBtn').addEventListener('click', async () => {
+            const response = await fetch('/users'); // Call the API to fetch users
+            if (response.ok) {
+                const users = await response.json();
+                const userList = document.getElementById('userList');
+                userList.innerHTML = ''; // Clear existing content
+
+                if (users.length === 0) {
+                    userList.innerHTML = '<p>No users found.</p>';
+                } else {
+                    users.forEach(user => {
+                        const userDiv = document.createElement('div');
+                        userDiv.textContent = `Email: ${user.email}, Password: ${user.password}`;
+                        userDiv.classList.add('p-2', 'border', 'border-gray-400', 'rounded', 'mb-2');
+                        userList.appendChild(userDiv);
+                    });
+                }
+            } else {
+                alert('Error fetching users');
+            }
+        });
+    </script>
+</body>
+
+</html>
