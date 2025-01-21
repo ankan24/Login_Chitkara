@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const path = require('path');   
+const path = require('path');
 
 
 const app = express();
@@ -19,8 +19,9 @@ const login_schema =new mongoose.Schema({
 })
 
 const LoginUser = mongoose.model('Login', login_schema);
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname,'index.html'));
+    res.sendFile(path.join(__dirname,'Login.html'));
 })
 app.post('/',(req,res)=>{
     console.log(req.body);
@@ -37,6 +38,22 @@ app.post('/',(req,res)=>{
         res.status(500).send('Error saving user.');
     })
 })
+
+
+app.get('/view-users', (req, res) => {
+    res.sendFile(path.join(__dirname, 'viewUsers.html')); 
+});
+
+app.get('/users', async (req, res) => {
+    try {
+        const users = await LoginUser.find(); // Fetch all users from the database
+        res.json(users); // Send users as JSON response
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error fetching users');
+    }
+});
+
 
 app.listen(3000,(err)=>{
     if(err) console.log(err);
