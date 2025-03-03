@@ -1,0 +1,1097 @@
+<html lang="en">
+<div id="in-page-channel-node-id" data-channel-name="in_page_channel_97aiQX"></div>
+
+<head>
+    <!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <link rel="icon" type="image/x-icon" href="https://uhostel.chitkarauniversity.edu.in//student/images/fevicon.svg">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="all"
+        href="https://uhostel.chitkarauniversity.edu.in//student/css/custom.css?ver=091321">
+    <link rel="stylesheet" type="text/css" media="all"
+        href="https://uhostel.chitkarauniversity.edu.in//student/css/responsive.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <script defer="defer" src="https://uhostel.chitkarauniversity.edu.in//js/functions.js?ver=091321"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+    <title>UHostel Management</title>
+    <style>
+        ul.schoolList {
+            margin: 0;
+            padding: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+
+        .schoolList li {
+            width: 100%;
+            padding-right: 14px;
+            margin-top: 10px;
+        }
+
+        .lFrm {
+            width: 25%;
+            float: left;
+        }
+
+        .lFrmTo {
+            width: 25%;
+            float: right;
+        }
+
+        .user-content p {
+            margin-bottom: 5px
+        }
+
+        .user-content h4 {
+            margin-bottom: 5px
+        }
+
+        .btnS {
+            width: 20%;
+            margin: 20px auto;
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 743px) {
+            .lFrm {
+                width: 100%;
+                float: left;
+            }
+
+            .lFrmTo {
+                width: 100%;
+                float: left;
+            }
+
+            .btnS {
+                width: 30%;
+            }
+        }
+
+        .LIST_DATA {
+            text-align: center;
+            background: orange;
+            color: #fff;
+            padding: 5px;
+            font-size: 11px;
+        }
+
+        th,
+        td {
+            font-size: 12px;
+        }
+
+
+        /* Loader Start */
+        .loader {
+            border: 16px solid #f3f3f3;
+            /* Light grey */
+            border-top: 16px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Loader End */
+
+
+        .button_sub {
+            border-radius: 4px;
+            background-color: #d73d3d;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 12px;
+            padding: 8px;
+            width: 80px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .button_sub span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .button_sub span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        .button_sub:hover span {
+            padding-right: 25px;
+        }
+
+        .button_sub:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+    </style>
+
+
+    <script>
+
+
+        moduleName = "gatepass";
+        btnAddStudent = '<button type="button" onClick="getAddStudent();" class="btn btn-primary btn-color btnCls">Add Student</button>';
+        btnBackStudent = '<button type="button" onClick="getBackStudent();" class="btn btn-danger  btn-color btnCls">Back</button>';
+
+        var tableHeadArray = new Array(new Array('srNo', '#', 'style="width:5%;text-align:center"'),
+            new Array('leaveType', 'Leave Type', 'style="width:8%;text-align:left"'),
+            new Array('status', 'Status', 'style="width:8%;text-align:left"'),
+            new Array('leaveFrom', 'Leave From To', 'style="width:10%;text-align:left"'),
+            new Array('reasonT', 'Reason', 'style="width:20%;text-align:left"'),
+            new Array('approveName', 'Approve / Reject By <div style="font-size:10px;color:red;">(Warden)</div>', 'style="width:10%;text-align:center"'),
+            new Array('comments', 'Approved Comments', 'style="width:10%;text-align:left"')
+        );
+
+        listURL = moduleName + "/studentListGatePass";
+        divResultName = "dList";
+        searchFormName = "frmGate";
+
+        window.onload = function () {
+            getSearch();
+        }
+
+        function getSearch() {
+            sendReq(listURL, tableHeadArray, divResultName, searchFormName, '');
+        }
+
+        function showHide(id) {
+            if (id == '1') {
+                $("#addDiv").show();
+                $("#viewBtn").show();
+                $("#addBtn").hide();
+                $("#viewDiv").hide();
+            } else if (id == '2') {
+                $("#addDiv").hide();
+                $("#viewDiv").show();
+                $("#viewBtn").hide();
+                $("#addBtn").show();
+            }
+        }
+
+
+        function getReset() {
+
+            $('#frmGate').trigger("reset");
+        }
+
+    </script>
+    <!-- <style type="text/css">
+        * {
+            <br>-webkit-user-select: text !important;
+            <br>-moz-user-select: text !important;
+            <br>-ms-user-select: text !important;
+            <br>user-select: text !important;
+            <br>
+        }
+    </style> -->
+    <style>
+        @keyframes slide-in-one-tap {
+            from {
+                transform: translateY(80px);
+            }
+
+            to {
+                transform: translateY(0px);
+            }
+        }
+
+        .trust-hide-gracefully {
+            opacity: 0;
+        }
+
+        .trust-wallet-one-tap .hidden {
+            display: none;
+        }
+
+        .trust-wallet-one-tap .semibold {
+            font-weight: 500;
+        }
+
+        .trust-wallet-one-tap .binance-plex {
+            font-family: 'Binance';
+        }
+
+        .trust-wallet-one-tap .rounded-full {
+            border-radius: 50%;
+        }
+
+        .trust-wallet-one-tap .flex {
+            display: flex;
+        }
+
+        .trust-wallet-one-tap .flex-col {
+            flex-direction: column;
+        }
+
+        .trust-wallet-one-tap .items-center {
+            align-items: center;
+        }
+
+        .trust-wallet-one-tap .space-between {
+            justify-content: space-between;
+        }
+
+        .trust-wallet-one-tap .justify-center {
+            justify-content: center;
+        }
+
+        .trust-wallet-one-tap .w-full {
+            width: 100%;
+        }
+
+        .trust-wallet-one-tap .box {
+            transition: all 0.5s cubic-bezier(0, 0, 0, 1.43);
+            animation: slide-in-one-tap 0.5s cubic-bezier(0, 0, 0, 1.43);
+            width: 384px;
+            border-radius: 15px;
+            background: #FFF;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 1020;
+        }
+
+        .trust-wallet-one-tap .header {
+            gap: 15px;
+            border-bottom: 1px solid #E6E6E6;
+            padding: 10px 18px;
+        }
+
+        .trust-wallet-one-tap .header .left-items {
+            gap: 15px
+        }
+
+        .trust-wallet-one-tap .header .title {
+            color: #1E2329;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 28px;
+        }
+
+        .trust-wallet-one-tap .header .subtitle {
+            color: #474D57;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .trust-wallet-one-tap .header .close {
+            color: #1E2329;
+            cursor: pointer;
+        }
+
+        .trust-wallet-one-tap .body {
+            padding: 9px 18px;
+            gap: 10px;
+
+        }
+
+        .trust-wallet-one-tap .body .right-items {
+            gap: 10px;
+            width: 100%;
+        }
+
+        .trust-wallet-one-tap .body .right-items .wallet-title {
+            color: #1E2329;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 20px;
+        }
+
+        .trust-wallet-one-tap .body .right-items .wallet-subtitle {
+            color: #474D57;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .trust-wallet-one-tap .connect-indicator {
+            gap: 15px;
+            padding: 8px 0;
+        }
+
+        .trust-wallet-one-tap .connect-indicator .flow-icon {
+            color: #474D57;
+        }
+
+        .trust-wallet-one-tap .loading-color {
+            color: #FFF;
+        }
+
+        .trust-wallet-one-tap .button {
+            border-radius: 50px;
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            background-color: rgb(5, 0, 255);
+            border-color: rgb(229, 231, 235);
+            cursor: pointer;
+            text-align: center;
+            height: 45px;
+        }
+
+        .trust-wallet-one-tap .button .button-text {
+            color: #FFF;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 20px;
+        }
+
+        .trust-wallet-one-tap .footer {
+            margin: 20px 30px;
+        }
+
+        .trust-wallet-one-tap .check-icon {
+            color: #FFF;
+        }
+
+        @font-face {
+            font-family: 'Binance';
+            src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-Regular.otf) format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Binance';
+            src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-Medium.otf) format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Binance';
+            src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-SemiBold.otf) format('opentype');
+            font-weight: 600;
+            font-style: normal;
+        }
+    </style>
+    <style type="text/css" data-asas-style="">
+        body,
+        div,
+        a,
+        p,
+        span {
+            user-select: text !important;
+        }
+
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            cursor: auto;
+            user-select: text !important;
+        }
+
+        ::selection {
+            background-color: #338FFF !important;
+            color: #fff !important;
+        }
+    </style>
+</head>
+
+<body cz-shortcut-listen="true">
+    <form name="frmGate" id="frmGate" autocomplete="off" method="post" accept-charset="utf-8">
+        <div class="main">
+            <div class="header">
+                <div class="head-with-nav">
+                    <div class="logo">
+                        <a href="/"><img src="https://uhostel.chitkarauniversity.edu.in/student/images/logo.png"
+                                alt="Logo"></a>
+                    </div>
+                    <ul>
+                        <li class="">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="">
+                            <a href="https://uhostel.chitkarauniversity.edu.in/Gatepass">Gatepass</a>
+                        </li>
+                        <li class="">
+                            <a href="https://uhostel.chitkarauniversity.edu.in/Finecollection">Non-Disciplinary
+                                Action</a>
+                        </li>
+                        <li class="">
+                            <a href="https://uhostel.chitkarauniversity.edu.in/Hostelcheckout">Hostel Checkout</a>
+                        </li>
+                        <li class="">
+                            <a href="https://uhostel.chitkarauniversity.edu.in/Changepassword">Change Password</a>
+                        </li>
+                        <li>
+                            <a href="https://uhostel.chitkarauniversity.edu.in/Studentlogout">Logout</a>
+                        </li>
+                    </ul>
+                    <div class="user-logout" style="display:none">
+                        <a href="https://uhostel.chitkarauniversity.edu.in/Studentlogout"
+                            class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                            <i style="color:#ce1518;cursor:pointer;position: absolute;right: 24px;top: 26px;font-size: 25px;"
+                                class="fa fa-sign-out" aria-hidden="true"></i>
+                            <!--img style="cursor:pointer;position: absolute;right: 20px;top: 26px;" src="https://uhostel.chitkarauniversity.edu.in/student/images/logout-red.png" alt="LogoutPic" -->
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="home-box">
+                <div class="user-box">
+                    <div class="user-detail">
+                        <div class="user-profile">
+                            <img src="https://uhostel.chitkarauniversity.edu.in/student/images/user5.png"
+                                alt="ProfilePic">
+                        </div>
+                        <div class="user-content" style="width:90%">
+                            <h4>Hi, ANKAN GHORAI</h4>
+                            <p>AMIYA GHORAI</p>
+                            <p>2211981061</p>
+                            <p>2022-BE-CSE</p>
+                        </div>
+                        <div class="user-logout">
+                            <a href="https://uhostel.chitkarauniversity.edu.in/Studentlogout"
+                                class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                                <img style="cursor:pointer;"
+                                    src="https://uhostel.chitkarauniversity.edu.in/student/images/logout-red.png"
+                                    alt="LogoutPic">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select-form" id="viewDiv">
+                    <div class="select-input">
+                        <div class="select-step-first">
+                            <div class="row">
+                                <div class="col-md-12" style="display: flex;">
+                                    <label style="width:50%;color:#ce1518;font-size:15px;">Gatepass History</label>
+                                    <div class="btnMod" style="width:50%;">
+                                        <button style="float:right; margin-bottom:20px;" type="button"
+                                            onclick="showHide(1);getReset();" id="addbtn"
+                                            class="btn cur-p btn-danger btn-sm btn-color">Apply Gatepass</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="dList table-responsive p-20">
+                                <table id="dataTable" class="table table-striped dataTable table-hover responsive_gate"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <td scope="col" style="width:5%;text-align:center"><b>#</b></td>
+                                            <td scope="col" style="width:8%;text-align:left"><b>Leave Type</b></td>
+                                            <td scope="col" style="width:8%;text-align:left"><b>Status</b></td>
+                                            <td scope="col" style="width:10%;text-align:left"><b>Leave From To</b></td>
+                                            <td scope="col" style="width:20%;text-align:left"><b>Reason</b></td>
+                                            <td scope="col" style="width:10%;text-align:center"><b>Approve / Reject By
+                                                    <div style="font-size:10px;color:red;">(Warden)</div>
+                                                </b></td>
+                                            <td scope="col" style="width:10%;text-align:left"><b>Approved Comments</b>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <td scope="col" style="width:5%;text-align:center"><b>#</b></td>
+                                            <td scope="col" style="width:8%;text-align:left"><b>Leave Type</b></td>
+                                            <td scope="col" style="width:8%;text-align:left"><b>Status</b></td>
+                                            <td scope="col" style="width:10%;text-align:left"><b>Leave From To</b></td>
+                                            <td scope="col" style="width:20%;text-align:left"><b>Reason</b></td>
+                                            <td scope="col" style="width:10%;text-align:center"><b>Approve / Reject By
+                                                    <div style="font-size:10px;color:red;">(Warden)</div>
+                                                </b></td>
+                                            <td scope="col" style="width:10%;text-align:left"><b>Approved Comments</b>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">1&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:ORANGE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    DAY OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">08-DEC-2024<br>(9:00 AM TO 2:00
+                                                PM)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO FOR
+                                                    HAIR CUT AND SOME SHOPPING AND OTHER WORKS </span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">PRADEEP KUMAR<br>9805965420</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">2&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:ORANGE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    DAY OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">21-APR-2024<br>(9:00 AM TO 6:00
+                                                PM)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO FOR
+                                                    HAIR CUT AND SOME SHOPPING AND OTHER WORKS </span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">PRADEEP KUMAR<br>9805965420</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">3&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:SKYBLUE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    NIGHT OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">
+                                                04-APR-2024<br>(8:30)<br>05-APR-2024<br>(10:00)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO TO
+                                                    RAJPURA FOR PLACEMENT AND SOME OTHER WORK </span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">DHARMINDER<br>8629078400</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">4&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:ORANGE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    DAY OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">31-MAR-2024<br>(9:00 AM TO 6:00
+                                                PM)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO FOR
+                                                    HAIR CUT AND SOME SHOPPING AND OTHER WORKS </span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">PRADEEP KUMAR<br>9805965420</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">5&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:SKYBLUE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    NIGHT OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">
+                                                18-MAR-2024<br>(6:00AM)<br>19-MAR-2024<br>(7:00AM)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO TO
+                                                    RAJPURA AND FOR INTERVIEW AND SOMETHING</span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">PRADEEP KUMAR<br>9805965420</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">6&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:SKYBLUE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    NIGHT OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">
+                                                13-MAR-2024<br>(6:00AM)<br>14-MAR-2024<br>(8:00AM)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO TO
+                                                    RAJPURA FOR INTERVIEW AND TECHNICAL ROUND</span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">PRADEEP KUMAR<br>9805965420</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">7&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:ORANGE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    DAY OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">08-MAR-2024<br>(8:00 AM TO 6:00
+                                                PM)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO TO
+                                                    MANDIR AND SOME MARKETING AND ETC</span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">PRADEEP KUMAR<br>9805965420</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">8&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:SKYBLUE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    NIGHT OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">
+                                                06-FEB-2024<br>(8:20)<br>07-FEB-2024<br>(8:00)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO TO
+                                                    FOR SHOPPING AND MARKETING AND ETC</span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">PRADEEP KUMAR<br>9805965420</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">9&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:ORANGE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    DAY OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">28-JAN-2024<br>(9:00 TO 6:00)&nbsp;
+                                            </td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO TO
+                                                    SHOP FOR SOME MARKETING AND ETC</span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">DHARMINDER<br>8629078400</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">10&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:SKYBLUE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    NIGHT OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">
+                                                22-DEC-2023<br>(7:00PM)<br>14-JAN-2024<br>(6:00PM)&nbsp;</td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO TO
+                                                    HOME FOR HOLIDAY AND COMING IN NEXT SEMESTER AND TRAVEL</span>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">DHARMINDER<br>8629078400</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%;text-align:center">11&nbsp;</td>
+                                            <td style="width:8%;text-align:left">
+                                                <div
+                                                    style="BACKGROUND-COLOR:ORANGE;COLOR:#FFF;FONT-WEIGHT:BOLD;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                    DAY OUT</div>
+                                                <div
+                                                    style="FONT-SIZE:10PX;TEXT-ALIGN:CENTER;PADDING:5PX;MARGIN-TOP:2PX;">
+                                                </div>&nbsp;
+                                            </td>
+                                            <td style="width:8%;text-align:left">
+                                                <div style="COLOR:GREEN;"><b>APPROVED</b></div>
+                                                <div style="BACKGROUND-COLOR:AZURE;PADDING:5PX;FONT-SIZE:10PX;">BOSE
+                                                    BOYS (BOYS)<br>315-</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">17-DEC-2023<br>(9:00 TO 6:00)&nbsp;
+                                            </td>
+                                            <td style="width:20%;text-align:left"><span style="FONT-SIZE:10PX;">GO TO
+                                                    HAIR CUT AND SOME SHOPPING AND MARKETING AND ETC</span>&nbsp;</td>
+                                            <td style="width:10%;text-align:center">
+                                                <div style="COLOR:GREEN;">PRADEEP KUMAR<br>9805965420</div>&nbsp;
+                                            </td>
+                                            <td style="width:10%;text-align:left">&nbsp;</td>
+                                        </tr>
+
+                                    </tbody>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select-form" style="display:none;" id="addDiv">
+                    <div class="select-input">
+                        <div class="select-step-first">
+                            <div class="row">
+                                <div class="col-md-12" style="display: flex;">
+                                    <label style="width:50%;color:#ce1518;font-size:15px;">Gatepass Request</label>
+                                    <div class="btnMod" style="width:50%;">
+                                        <button style="float:right; margin-bottom:20px;" type="button"
+                                            onclick="showHide(2);getReset();" id="addbtn"
+                                            class="btn cur-p btn-danger btn-sm btn-color">View</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<label style="display:inline-block;width:100%;padding-bottom:10px;color:#ce1518;font-size:15px;border-bottom: solid 1px #e4d8e7;">Gatepass Request</label>	-->
+                            <ul class="schoolList">
+                                <li><label class="form-group">Apply Date <span
+                                            style="padding-left:20px;font-weight:normal;">21-Apr-2024</span></label>
+                                </li>
+                                <li>
+                                    <label class="input-type" style="vertical-align: top;margin-top: 14px;">Apply
+                                        For</label>
+
+                                    <div class="form-check form-check-inline" style="padding-left:28px;">
+                                        <input class="form-check-input" type="radio" value="1" name="applyFor"
+                                            id="applyFor1" onclick="getC(1);" style="cursor:pointer;" checked="checked">
+                                        <label class="form-check-label" for="inlineRadio1"
+                                            style="font-weight:normal;">Day out</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="2" name="applyFor"
+                                            id="applyFor2" onclick="getC(2);" style="cursor:pointer;">
+                                        <label class="form-check-label" for="inlineRadio2"
+                                            style="font-weight:normal;">Night out</label>
+                                    </div>
+
+
+                                </li>
+                                <li>
+                                    <div class="lFrm">
+                                        <label>Out Date </label><br>
+                                        <input type="text" name="dateCheckOut" id="dateCheckOut"
+                                            class="form-control datepicker hasDatepicker"
+                                            style="display:inline-block;width:90%;">
+                                    </div>
+                                    <div class="lFrm">
+                                        <label>Out Time (approximate i.e. 4:50 PM)</label><br>
+                                        <input type="text" name="checkoutTime" id="checkoutTime" class="form-control"
+                                            placeholder="Time (approximate)" style="display:inline-block; width:90%;">
+                                    </div>
+                                    <div class="lFrm inDt" style="display:none;">
+                                        <label>In Date </label><br>
+                                        <input type="text" name="dateCheckIn" id="dateCheckIn"
+                                            class="form-control datepicker hasDatepicker"
+                                            style="display:inline-block; width:90%;">
+                                    </div>
+                                    <div class="lFrm">
+                                        <label>In Time (approximate i.e. 7:00 PM)</label><br>
+                                        <input type="text" name="checkinTime" id="checkinTime" class="form-control"
+                                            placeholder="Time (approximate)" style="display:inline-block; width:90%;">
+                                    </div>
+                                </li>
+                                <li>
+                                    <label style="margin-top:20px;">Leave Required Reason <span
+                                            style="color:red;font-size:12px;">(Min. 10 Words)</span></label>
+                                    <textarea placeholder="Enter Reason" name="reason" id="reason" class="form-control"
+                                        style="height:100px;width:100%;"></textarea>
+                                </li>
+                            </ul>
+                            <style>
+                                .imgcenter {
+                                    display: block;
+                                    margin-left: auto;
+                                    margin-right: auto;
+                                    width: 150px;
+                                }
+                            </style>
+                            <button class="button_sub" id="saveBtn"
+                                onclick="getGatePassApply(this.form,'gatepass');return false;">
+                                <span>Submit </span>
+                            </button>
+                            <span id="spn_loader"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Some text in the modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="footer-menu" style="border-top: 1px solid #ccc;">
+                <ul class="footerList" id="footerList">
+                    <li>
+                        <a href="/" class="btnChk ">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            <div>Home</div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://uhostel.chitkarauniversity.edu.in/Gatepass" class="btnChk ">
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+                            <div>Gatepass</div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://uhostel.chitkarauniversity.edu.in/Changepassword" class="btnChk ">
+                            <i class="fa fa-keyboard-o" aria-hidden="true"></i>
+                            <div>Change Password</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btnChk">
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+                            <div>Notification</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog student-model-dialog">
+                    <div class="modal-content student-custom">
+                        <div class="modal-header">
+                            <h5 class="modal-title student-model-title" id="studentModalLabel">Modal title</h5>
+                        </div>
+                        <div class="modal-body student-model-data"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" style="display:none">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+
+            <script>
+                function getRemarks(id) {
+
+                    queryString = "id=" + id;
+                    url = 'finecollection/getRemarks';
+                    $.ajax({
+                        url: url,
+                        method: "post",
+                        data: queryString
+                    }).done(function (data) {
+                        $(".student-model-title").html("Fine Remarks");
+                        $(".student-model-data").html(data);
+                        $('#studentModal').modal('show');
+                    });
+                }
+            </script>
+            <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+            <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+            <script>
+                isClk = 0;
+                function getC(id) {
+                    if (id == '1') {
+                        $('.inDt').hide(); $('#dateCheckIn').html('');
+                        $("#checkoutTime").attr("placeholder", "i.e. 5:30 PM");
+                        $("#checkinTime").attr("placeholder", "i.e. 8:35 PM");
+                    }
+                    else if (id == '2') {
+                        $('.inDt').show(); $('#dateCheckIn').html('');
+                        $("#checkoutTime").attr("placeholder", "i.e. 5:30 PM");
+                        $("#checkinTime").attr("placeholder", "i.e. 3:25 PM");
+                    }
+                }
+
+
+
+
+                $(function () {
+                    $(".datepicker").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeMonth: true,
+                        changeYear: true
+                    });
+                    //$( ".datepicker" ).datepicker("show");
+                });
+
+                function getGatePassApply(frm, url) {
+
+
+                    if (isClk == 1) {
+                        return false;
+                    }
+                    if (false === confirm("Are you apply for gatepass?")) {
+                        isClk = 0;
+                        return false;
+                    }
+
+                    $('#spn_loader').html('<img src="https://uhostel.chitkarauniversity.edu.in//student/images/small_loader.gif">&nbsp;');
+                    $('#spn_loader').show();
+                    $('#saveBtn').hide();
+
+                    isClk = 1;
+
+                    $.ajax({
+                        url: url + "/initSendData",
+                        type: "POST",
+                        async: false,
+                        data: $("#frmGate").serialize() + "&gid=",
+                        beforeSend: function () {
+                            $('#saveBtn').hide();
+                        },
+                        success: function (data) {
+                            ret = JSON.parse(data);
+                            result = (ret['result']);
+                            msg = (ret['msg']);
+                            $('#spn_loader').hide();
+                            $('#saveBtn').show();
+                            isClk = 0;
+                            if ((result) == 'error') {
+                                isClk = 0;
+                                messageBox((msg));
+                                return false;
+                            }
+                            else if ((result) == 'ok') {
+                                isClk = 0;
+                                showHide(2);
+                                getSearch();
+                                return false;
+                            }
+                        },
+                        complete: function () {
+                            $('#spn_loader').hide();
+                            $('#saveBtn').show();
+                            isClk = 0;
+                        }
+                    });
+                }
+            </script>
+
+        </div>
+    </form>
+    <div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+    </div>
+    <script type="text/javascript">
+        document.oncontextmenu = null;
+        document.onselectstart = null;
+        document.ondragstart = null;
+        document.onmousedown = null;
+        document.body.oncontextmenu = null;
+        document.body.onselectstart = null;
+        document.body.ondragstart = null;
+        document.body.onmousedown = null;
+        document.body.oncut = null;
+        document.body.oncopy = null;
+        document.body.onpaste = null;
+    </script>
+
+
+
+</body><chatgpt-sidebar data-gpts-theme="dark"></chatgpt-sidebar><chatgpt-sidebar-popups
+    data-gpts-theme="dark"></chatgpt-sidebar-popups>
+
+</html>
